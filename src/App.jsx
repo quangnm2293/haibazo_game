@@ -26,7 +26,7 @@ function Game() {
   };
 
   const handlePlay = () => {
-    stopTimerPoint();
+    stopTimer();
     generatePoints();
     setPlay(true);
     setAutoPlay(false);
@@ -58,6 +58,9 @@ function Game() {
 
   const stopTimerPoint = () => {
     clearInterval(timerRef.current);
+    timerPointRef.current.map((timer) => clearInterval(timer.id));
+  };
+  const stopTimer = () => {
     timerPointRef.current.map((timer) => clearInterval(timer.id));
   };
 
@@ -205,15 +208,15 @@ function Game() {
             style={{
               left: point.x,
               top: point.y,
-              opacity: timerPointRef.current[index].value / 3,
+              opacity: timerPointRef.current[index]?.value / 3,
               pointerEvents: win || gameOver ? "none" : "auto",
               zIndex: index,
             }}
           >
-            <p className="text-sm text-black">{point.id}</p>
+            <p className="text-sm text-gray-500">{point.id}</p>
             {clickedOrder.includes(point.id) && (
               <p className="text-xs text-white">
-                {timerPointRef.current[index].value.toFixed(1)}s
+                {timerPointRef.current[index]?.value.toFixed(1)}s
               </p>
             )}
           </div>
