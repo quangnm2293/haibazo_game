@@ -26,6 +26,7 @@ function Game() {
   };
 
   const handlePlay = () => {
+    stopTimerPoint();
     generatePoints();
     setPlay(true);
     setAutoPlay(false);
@@ -39,6 +40,7 @@ function Game() {
       id: i,
       value: 3,
     }));
+    timerPointRef.current.map((timer) => clearInterval(timer.id));
   };
 
   const startTimerPoint = (index) => {
@@ -84,7 +86,11 @@ function Game() {
   };
 
   const handleInputChange = (e) => {
-    setNumPoints(Number(e.target.value));
+    if (e.target.value) {
+      setNumPoints(Number(e.target.value));
+    } else {
+      setNumPoints(0);
+    }
   };
 
   useEffect(() => {
@@ -107,6 +113,7 @@ function Game() {
   useEffect(() => {
     let index = clickedOrder.length;
     let timeInterval;
+    clearInterval(timeInterval);
 
     if (autoPlay) {
       timeInterval = setInterval(() => {
@@ -190,7 +197,7 @@ function Game() {
           <div
             key={point.id}
             onClick={() => handlePointClick(point.id)}
-            className={`absolute w-10 h-10 flex justify-center flex-col items-center border rounded-full cursor-pointer ${
+            className={`absolute w-10 h-10 flex justify-center flex-col items-center border border-orange-400 rounded-full cursor-pointer ${
               clickedOrder.includes(point.id)
                 ? "bg-orange-400"
                 : "bg-transparent"
@@ -200,6 +207,7 @@ function Game() {
               top: point.y,
               opacity: timerPointRef.current[index].value / 3,
               pointerEvents: win || gameOver ? "none" : "auto",
+              zIndex: index,
             }}
           >
             <p className="text-sm text-black">{point.id}</p>
