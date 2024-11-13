@@ -46,12 +46,12 @@ function Game() {
   const startTimerPoint = (index) => {
     clearInterval(timerPointRef.current[index]);
     timerPointRef.current[index].id = setInterval(() => {
-      if (timerPointRef.current[index].value < 0.1) {
-        clearInterval(timerPointRef.current[index].id);
+      if (timerPointRef.current[index]?.value < 0.1) {
+        clearInterval(timerPointRef.current[index]?.id);
         timerPointRef.current[index].value = 0;
       } else {
         timerPointRef.current[index].value =
-          timerPointRef.current[index].value - 0.1;
+          timerPointRef.current[index]?.value - 0.1;
       }
     }, 100);
   };
@@ -89,11 +89,8 @@ function Game() {
   };
 
   const handleInputChange = (e) => {
-    if (e.target.value) {
-      setNumPoints(Number(e.target.value));
-    } else {
-      setNumPoints(0);
-    }
+    setNumPoints(Number(e.target.value));
+    setTrigger(false);
   };
 
   useEffect(() => {
@@ -111,7 +108,7 @@ function Game() {
       stopTimerPoint();
     }
     return () => clearInterval(interval);
-  }, [trigger, gameOver, win]);
+  }, [trigger, gameOver, win, numPoints]);
 
   useEffect(() => {
     let index = clickedOrder.length;
@@ -208,9 +205,8 @@ function Game() {
             style={{
               left: point.x,
               top: point.y,
-              opacity: timerPointRef.current[index]?.value / 3,
+              opacity: timerPointRef.current[index]?.value / 3 || 0,
               pointerEvents: win || gameOver ? "none" : "auto",
-              zIndex: index,
             }}
           >
             <p className="text-sm text-gray-500">{point.id}</p>
