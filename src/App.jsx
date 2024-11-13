@@ -89,8 +89,8 @@ function Game() {
   };
 
   const handleInputChange = (e) => {
-    setNumPoints(Number(e.target.value));
     setTrigger(false);
+    setNumPoints(Number(e.target.value));
   };
 
   useEffect(() => {
@@ -108,7 +108,7 @@ function Game() {
       stopTimerPoint();
     }
     return () => clearInterval(interval);
-  }, [trigger, gameOver, win, numPoints]);
+  }, [trigger, gameOver, win, numPoints, points]);
 
   useEffect(() => {
     let index = clickedOrder.length;
